@@ -244,4 +244,29 @@ The dashboard at `/ui/` is a single-page vanilla JS app:
 
 ---
 
+## Application Live in Demo
+**Youtube** - https://youtu.be/vVMHRmI69cg
+
+**Home Screen**
+<img width="1470" height="956" alt="Screenshot 2026-04-18 at 5 21 05 PM" src="https://github.com/user-attachments/assets/237ca39f-8d4e-472e-b3c4-149a7edca3d2" />
+
+**/Leaderboard**
+<img width="1470" height="797" alt="Screenshot 2026-04-18 at 5 21 21 PM" src="https://github.com/user-attachments/assets/b641b630-bfae-45c8-b15f-f6de7895df3a" />
+
+**/Info**
+<img width="1470" height="956" alt="Screenshot 2026-04-18 at 5 21 24 PM" src="https://github.com/user-attachments/assets/6e88f9be-c4d5-4d30-b3b7-3743494fe4b1" />
+
+**/Performance**
+<img width="1470" height="956" alt="Screenshot 2026-04-18 at 5 21 24 PM" src="https://github.com/user-attachments/assets/c9986700-2e7d-4818-b871-7af3deebfb8e" />
+
+**/History**
+<img width="495" height="693" alt="Screenshot 2026-04-18 at 5 21 44 PM" src="https://github.com/user-attachments/assets/a08a54ee-9389-424e-b803-dac297402644" />
+
+**/Add**
+<img width="692" height="533" alt="Screenshot 2026-04-18 at 5 23 00 PM" src="https://github.com/user-attachments/assets/6871e7b4-a596-45be-9331-431a290f913a" />
+
+**/Remove**
+<img width="681" height="240" alt="Screenshot 2026-04-18 at 5 34 50 PM" src="https://github.com/user-attachments/assets/4af6b6cd-3796-4f74-8473-beae58efd56c" />
+
+
 Built for **Luddy Hackathon — Case 2: Smart City Infrastructure Health Leaderboard**.
