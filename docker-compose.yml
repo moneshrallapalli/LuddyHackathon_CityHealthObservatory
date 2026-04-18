@@ -1,4 +1,9 @@
 # Requires Docker Compose v2.24+ (service_completed_successfully condition).
+#
+# Default `docker compose up` brings up the full working stack:
+#   postgres + redis + redpanda + simulator + worker + api
+# Flink is optional (has a pemja/JDK build step that's finicky on some hosts):
+#   docker compose --profile flink up
 
 services:
   postgres:
@@ -64,7 +69,26 @@ services:
         condition: service_completed_successfully
     restart: unless-stopped
 
+  worker:
+    build: .
+    command: ["python", "-m", "services.worker"]
+    environment:
+      REDIS_URL: redis://redis:6379/0
+      DATABASE_URL: postgresql://app:app@postgres:5432/citylb
+      KAFKA_BOOTSTRAP_SERVERS: redpanda:9092
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      redpanda:
+        condition: service_started
+      redpanda-init:
+        condition: service_completed_successfully
+    restart: unless-stopped
+
   flink-jobmanager:
+    profiles: ["flink"]
     build:
       context: .
       dockerfile: Dockerfile.flink
@@ -85,6 +109,7 @@ services:
         condition: service_healthy
 
   flink-taskmanager:
+    profiles: ["flink"]
     build:
       context: .
       dockerfile: Dockerfile.flink
@@ -100,6 +125,7 @@ services:
       - flink-jobmanager
 
   flink-submit:
+    profiles: ["flink"]
     build:
       context: .
       dockerfile: Dockerfile.flink

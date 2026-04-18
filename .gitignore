@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+backend/.venv/
+backend/data/
+
+# Node / client build artifacts
+node_modules/
+dist/
+
+# Databases
+*.db
+*.sqlite
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Notes / case brief
+*.docx
+*.pdf
+
+# Env
+.env
+.env.local
+
+# Docker local overrides
+docker-compose.override.yml
+docker-compose.override.yaml

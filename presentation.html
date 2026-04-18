@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>City Health Observatory — Presentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #f1ede4;
+      --paper-2: #e8e2d4;
+      --paper-3: #ddd6c5;
+      --rule: #c8c0ad;
+      --ink: #16181c;
+      --ink-2: #4a5057;
+      --ink-3: #76705f;
+      --accent: #b54b2b;
+      --good: #0ca678;
+      --serif: "Fraunces", Georgia, serif;
+      --sans: "Inter", system-ui, sans-serif;
+      --mono: "JetBrains Mono", ui-monospace, monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      height: 100%; width: 100%;
+      background: var(--paper); color: var(--ink);
+      font-family: var(--sans);
+      overflow: hidden;
+    }
+    .deck {
+      width: 100vw; height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+    }
+    .slide {
+      display: none;
+      width: min(1100px, 92vw);
+      height: min(680px, 90vh);
+      padding: 5rem 5.5rem;
+      background: var(--paper);
+      border: 1px solid var(--rule);
+      position: relative;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .slide.active { display: flex; }
+
+    .eyebrow {
+      font-family: var(--mono); font-size: .7rem;
+      letter-spacing: .32em; text-transform: uppercase;
+      color: var(--ink-3);
+      margin-bottom: 1.2rem;
+    }
+    h1 {
+      font-family: var(--serif); font-weight: 400;
+      font-size: clamp(2rem, 4.2vw, 3.6rem);
+      letter-spacing: -.02em; line-height: 1.05;
+      margin-bottom: 1rem;
+    }
+    h2 {
+      font-family: var(--serif); font-weight: 400;
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
+      letter-spacing: -.015em; line-height: 1.15;
+      margin-bottom: 1.6rem;
+      border-bottom: 1px solid var(--rule);
+      padding-bottom: .8rem;
+    }
+    h3 {
+      font-family: var(--serif); font-weight: 500;
+      font-size: 1.05rem; letter-spacing: -.01em;
+      margin-bottom: .4rem;
+    }
+    p, li {
+      font-size: 1.02rem; line-height: 1.55; color: var(--ink-2);
+    }
+    p + p { margin-top: .9rem; }
+    ul { list-style: none; }
+    ul li {
+      padding-left: 1.6rem; position: relative;
+      margin-bottom: .7rem;
+    }
+    ul li::before {
+      content: "—"; position: absolute; left: 0;
+      color: var(--ink-3); font-family: var(--mono);
+    }
+    strong { color: var(--ink); font-weight: 500; }
+    code, .mono {
+      font-family: var(--mono); font-size: .92em;
+      background: var(--paper-2);
+      padding: .08rem .4rem; border-radius: 2px;
+      color: var(--ink);
+    }
+
+    .cover {
+      justify-content: space-between;
+      padding: 4.5rem 5.5rem;
+    }
+    .cover .top .deck-tag {
+      font-family: var(--mono); font-size: .68rem;
+      letter-spacing: .32em; text-transform: uppercase;
+      color: var(--ink-3);
+    }
+    .cover .rule {
+      width: 60px; height: 2px; background: var(--ink);
+      margin: 1.2rem 0 2rem;
+    }
+    .cover h1 {
+      font-size: clamp(2.8rem, 5.6vw, 4.8rem);
+      font-weight: 300; line-height: 1;
+      max-width: 14ch;
+    }
+    .cover .subtitle {
+      font-family: var(--serif); font-style: italic;
+      font-size: 1.3rem; color: var(--ink-2);
+      margin-top: 1.8rem; max-width: 48ch;
+    }
+    .cover .meta {
+      display: flex; gap: 3rem;
+      font-family: var(--mono); font-size: .7rem;
+      letter-spacing: .2em; text-transform: uppercase;
+      color: var(--ink-3);
+      border-top: 1px solid var(--rule); padding-top: 1.2rem;
+    }
+    .cover .meta strong {
+      display: block; color: var(--ink);
+      font-size: .85rem; letter-spacing: .1em; margin-top: .3rem;
+      font-family: var(--sans); text-transform: none;
+    }
+
+    .two-col {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 3rem; margin-top: .5rem;
+    }
+    .stat-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1.6rem 2rem; margin-top: .8rem;
+    }
+    .stat {
+      border-left: 2px solid var(--ink);
+      padding-left: 1rem;
+    }
+    .stat .k {
+      font-family: var(--mono); font-size: .6rem;
+      letter-spacing: .2em; text-transform: uppercase;
+      color: var(--ink-3); margin-bottom: .3rem;
+    }
+    .stat .v {
+      font-family: var(--serif); font-size: 1.7rem;
+      font-weight: 400; color: var(--ink); line-height: 1;
+    }
+    .stat .d {
+      font-size: .78rem; color: var(--ink-2);
+      margin-top: .4rem; line-height: 1.35;
+    }
+
+    .arch {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: .5rem; margin-top: 1.8rem;
+      font-family: var(--mono); font-size: .72rem;
+    }
+    .arch .box {
+      border: 1px solid var(--ink); padding: .9rem 1rem;
+      min-width: 0; text-align: center;
+      background: var(--paper); flex: 1;
+    }
+    .arch .box strong {
+      display: block; font-size: .78rem;
+      letter-spacing: .1em; text-transform: uppercase;
+      margin-bottom: .25rem;
+    }
+    .arch .arrow { color: var(--ink-3); }
+    .arch .box.accent { background: var(--ink); color: var(--paper); }
+    .arch .box.accent strong { color: var(--paper); }
+
+    .formula {
+      font-family: var(--mono); font-size: .92rem;
+      background: var(--paper-2); border-left: 2px solid var(--ink);
+      padding: 1rem 1.2rem; margin: 1.4rem 0;
+      white-space: pre; overflow-x: auto;
+      color: var(--ink);
+    }
+
+    .weights {
+      display: grid; grid-template-columns: repeat(5, 1fr);
+      gap: .8rem; margin-top: 1rem;
+    }
+    .weight {
+      text-align: center; border: 1px solid var(--rule);
+      padding: .9rem .4rem; background: var(--paper);
+    }
+    .weight .n { font-family: var(--serif); font-size: 1.5rem; color: var(--ink); }
+    .weight .l {
+      font-family: var(--mono); font-size: .6rem;
+      letter-spacing: .2em; text-transform: uppercase;
+      color: var(--ink-3); margin-top: .3rem;
+    }
+
+    .nav {
+      position: fixed; bottom: 1.4rem; left: 0; right: 0;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0 2rem;
+      font-family: var(--mono); font-size: .65rem;
+      color: var(--ink-3); letter-spacing: .2em; text-transform: uppercase;
+      pointer-events: none;
+    }
+    .nav .counter { background: var(--paper); padding: .3rem .6rem; }
+    .nav .hint { opacity: .6; }
+
+    .dot-row {
+      display: flex; gap: .4rem;
+      position: fixed; top: 1.2rem; left: 50%; transform: translateX(-50%);
+    }
+    .dot-row .dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--rule);
+      transition: background .25s;
+    }
+    .dot-row .dot.active { background: var(--ink); }
+
+    .tag-row {
+      display: flex; gap: .5rem; flex-wrap: wrap; margin-top: 1.2rem;
+    }
+    .tag {
+      font-family: var(--mono); font-size: .65rem;
+      letter-spacing: .12em; text-transform: uppercase;
+      padding: .3rem .65rem; border: 1px solid var(--rule);
+      color: var(--ink-2);
+    }
+    .tag.accent { border-color: var(--ink); color: var(--ink); }
+
+    .callout {
+      font-family: var(--serif); font-style: italic;
+      font-size: 1.3rem; line-height: 1.45; color: var(--ink);
+      border-left: 3px solid var(--accent);
+      padding: .2rem 0 .2rem 1.2rem;
+      margin: 1.4rem 0;
+    }
+
+    @media (max-width: 760px) {
+      .slide { padding: 3rem 2rem; }
+      .two-col { grid-template-columns: 1fr; gap: 1.4rem; }
+      .stat-grid { grid-template-columns: 1fr 1fr; }
+      .arch { flex-direction: column; }
+      .arch .arrow { transform: rotate(90deg); }
+      .weights { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <div class="dot-row" id="dots"></div>
+
+  <div class="deck">
+    <!-- 1. Cover -->
+    <section class="slide cover active">
+      <div class="top">
+        <div class="deck-tag">Luddy Hackathon · Case 2</div>
+        <div class="rule"></div>
+        <h1>City Health<br/>Observatory</h1>
+        <div class="subtitle">
+          A real-time urban health score for every neighborhood —
+          streaming sensor data, composite health scoring, and
+          cascading failure detection across the Indianapolis metro.
+        </div>
+      </div>
+      <div class="meta">
+        <div>Stack<strong>FastAPI · Kafka · Redis · Postgres</strong></div>
+        <div>Mode<strong>Live streaming pipeline</strong></div>
+        <div>Scope<strong>57 districts, 5 sensor families</strong></div>
+      </div>
+    </section>
+
+    <!-- 2. Problem Statement -->
+    <section class="slide">
+      <div class="eyebrow">01 · Problem Statement</div>
+      <h1>Cities are sensor-rich,<br/>insight-poor.</h1>
+      <div class="callout">
+        Traffic, air quality, power, water, and noise telemetry all exist —
+        but each lives in its own dashboard, in its own department, on its own clock.
+      </div>
+      <ul style="margin-top: .6rem;">
+        <li>Operators can't see <strong>one coherent picture</strong> of a neighborhood's health.</li>
+        <li>Failures in one system <strong>cascade invisibly</strong> into adjacent districts and other utilities.</li>
+        <li>By the time an incident is obvious on a single meter, the ripple has already happened.</li>
+      </ul>
+    </section>
+
+    <!-- 3. Why we need this -->
+    <section class="slide">
+      <div class="eyebrow">02 · Why We Need This</div>
+      <h2>A shared real-time view of urban health.</h2>
+      <div class="two-col">
+        <div>
+          <h3>Composite, not siloed</h3>
+          <p>One Urban Health Score (UHS) per district — a weighted blend of traffic, air, power, water, and noise — so operators and residents see one number that actually moves when things go wrong.</p>
+        </div>
+        <div>
+          <h3>Ripple-aware</h3>
+          <p>Real infrastructure failures don't respect district lines. When one neighborhood's score collapses, adjacent areas are automatically penalized — the same way a substation outage propagates through a grid.</p>
+        </div>
+        <div>
+          <h3>Operator control</h3>
+          <p>Manual override lets dispatchers pin a catastrophic score (e.g., confirmed incident) for 30 s and immediately trigger the cascade — bypassing the stream's natural detection lag.</p>
+        </div>
+        <div>
+          <h3>Streaming by default</h3>
+          <p>Every score is recomputed from a 5-second tumbling window over fresh sensor data. No nightly batch; no stale snapshots.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Architecture -->
+    <section class="slide">
+      <div class="eyebrow">03 · Architecture</div>
+      <h2>Streaming pipeline, one coherent surface.</h2>
+      <div class="arch">
+        <div class="box"><strong>Simulator</strong>sensor.*</div>
+        <div class="arrow">→</div>
+        <div class="box accent"><strong>Kafka</strong>Redpanda</div>
+        <div class="arrow">→</div>
+        <div class="box"><strong>Worker</strong>5s window</div>
+        <div class="arrow">→</div>
+        <div class="box accent"><strong>Redis</strong>Live ZSET</div>
+        <div class="arrow">↓</div>
+        <div class="box"><strong>FastAPI</strong>/state · /performance</div>
+      </div>
+      <ul style="margin-top: 2.2rem;">
+        <li><strong>Redis</strong> holds the live leaderboard (sorted set + per-district detail) — this is what the dashboard polls.</li>
+        <li><strong>Postgres</strong> stores the full score history, tagged by source (<code>stream</code> / <code>manual</code> / <code>cascade</code>).</li>
+        <li>The worker also consumes a <code>city.cascade</code> topic it produces to itself — same consumer applies neighbor penalties.</li>
+      </ul>
+    </section>
+
+    <!-- 5. UHS -->
+    <section class="slide">
+      <div class="eyebrow">04 · Urban Health Score</div>
+      <h2>One weighted score per district, every 5 seconds.</h2>
+      <div class="formula">UHS = 0.25·traffic + 0.30·aqi + 0.20·power + 0.10·water + 0.15·noise
+      blended = 0.85·UHS_new + 0.15·UHS_prev        (stability / pseudo time-decay)</div>
+      <div class="weights">
+        <div class="weight"><div class="n">0.30</div><div class="l">Air</div></div>
+        <div class="weight"><div class="n">0.25</div><div class="l">Traffic</div></div>
+        <div class="weight"><div class="n">0.20</div><div class="l">Power</div></div>
+        <div class="weight"><div class="n">0.15</div><div class="l">Noise</div></div>
+        <div class="weight"><div class="n">0.10</div><div class="l">Water</div></div>
+      </div>
+      <p style="margin-top: 1.4rem;">Weights are configurable in <code>backend/config.yaml</code>; the blend factor damps noise without hiding real shifts.</p>
+    </section>
+
+    <!-- 6. Cascade -->
+    <section class="slide">
+      <div class="eyebrow">05 · Cascade Model</div>
+      <h2>Failures propagate through an adjacency graph.</h2>
+      <ul>
+        <li>When a district's score drops <strong>≥ 20 points</strong> in a single 5-second window, the worker publishes a <code>ripple</code> to <code>city.cascade</code>.</li>
+        <li>Every <strong>adjacent district</strong> takes a <strong>−12 point</strong> penalty, written as a <code>source=cascade</code> row in history.</li>
+        <li><strong>Manual catastrophes</strong> (<code>POST /add</code> with <code>catastrophic:true</code>) publish the same ripple — so operator-confirmed incidents propagate immediately.</li>
+        <li>Adjacency is defined per-district in <code>config.yaml</code> — roughly geographic, 2–4 neighbors per seed.</li>
+      </ul>
+      <div class="callout" style="margin-top: 1.6rem;">
+        Drop <code>Downtown</code> and 10 neighboring districts get hit in the same tick —
+        Mass Ave, Fountain Square, Near Eastside, Near Westside, Riverside, Crown Hill &hellip;
+      </div>
+    </section>
+
+    <!-- 7. Metrics -->
+    <section class="slide">
+      <div class="eyebrow">06 · Metrics that matter</div>
+      <h2>What the dashboard exposes — and why.</h2>
+      <div class="stat-grid">
+        <div class="stat">
+          <div class="k">UHS score</div>
+          <div class="v">0–100</div>
+          <div class="d">Per-district health now. Lower = worse.</div>
+        </div>
+        <div class="stat">
+          <div class="k">Records onboarded</div>
+          <div class="v">cumulative</div>
+          <div class="d">Every Kafka record the worker pulls in this session.</div>
+        </div>
+        <div class="stat">
+          <div class="k">Records processed</div>
+          <div class="v">cumulative</div>
+          <div class="d">Subset that reached aggregation or cascade apply.</div>
+        </div>
+        <div class="stat">
+          <div class="k">Aggregation latency</div>
+          <div class="v">ms / window</div>
+          <div class="d">Time to prune, score, and write per flush.</div>
+        </div>
+        <div class="stat">
+          <div class="k">Live districts</div>
+          <div class="v">ZSET size</div>
+          <div class="d">How many districts are currently on the board.</div>
+        </div>
+        <div class="stat">
+          <div class="k">Distribution shape</div>
+          <div class="v">skew · IQR</div>
+          <div class="d">Is the city mostly healthy, or lopsided?</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Control plane -->
+    <section class="slide">
+      <div class="eyebrow">07 · Control Plane</div>
+      <h2>Operators can pause, resume, and reset the pipeline.</h2>
+      <div class="two-col">
+        <div>
+          <h3>Pause</h3>
+          <p><code>POST /pipeline/pause</code> — records keep arriving from Kafka (offsets advance, no consumer lag), but nothing is buffered, scored, or cascaded. Onboarded climbs; processed stays flat.</p>
+        </div>
+        <div>
+          <h3>Start</h3>
+          <p><code>POST /pipeline/start</code> — worker resumes normal aggregation within ~400 ms of the click.</p>
+        </div>
+        <div>
+          <h3>Reset counters</h3>
+          <p><code>POST /pipeline/reset</code> — zeros the session record counters so demos and load tests start from a clean baseline.</p>
+        </div>
+        <div>
+          <h3>Why it matters</h3>
+          <p>A single pane of glass is only useful if operators trust what they're seeing — including the ability to <em>stop</em> feeding garbage data into it mid-incident.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. Demo -->
+    <section class="slide">
+      <div class="eyebrow">08 · Live Demo</div>
+      <h2>What you're about to see.</h2>
+      <ul>
+        <li><strong>Leaderboard + heatmap</strong> of 57 Indianapolis districts, updating every 2 seconds.</li>
+        <li><strong>Flood Downtown</strong> with near-zero sensor values → score collapses → all 10 configured neighbors drop by −12 in the same tick.</li>
+        <li><strong>Manual catastrophe</strong> on Carmel via <code>/add</code> → Zionsville, Westfield, Fishers, Nora get hit immediately.</li>
+        <li><strong>Pause</strong> the pipeline → onboarded counter keeps climbing, processed counter freezes.</li>
+        <li><strong>Reset</strong> counters → baseline zeros while the live leaderboard keeps moving.</li>
+      </ul>
+      <div class="tag-row">
+        <span class="tag">REST</span>
+        <span class="tag">Kafka</span>
+        <span class="tag">Redis</span>
+        <span class="tag">Postgres</span>
+        <span class="tag accent">Live dashboard</span>
+      </div>
+    </section>
+
+    <!-- 10. What's next -->
+    <section class="slide">
+      <div class="eyebrow">09 · What's next</div>
+      <h2>From demo to deployable.</h2>
+      <div class="two-col">
+        <div>
+          <h3>Real sensors</h3>
+          <p>Swap the simulator for an actual MQTT → Kafka bridge; the rest of the pipeline doesn't change.</p>
+        </div>
+        <div>
+          <h3>Flink path</h3>
+          <p>The PyFlink job is already wired — re-enable it for larger fan-out, exactly-once guarantees, and real watermark handling.</p>
+        </div>
+        <div>
+          <h3>Map view</h3>
+          <p>Render adjacency graph + live scores on an Indianapolis map so cascades are visible as concentric ripples.</p>
+        </div>
+        <div>
+          <h3>Alerting</h3>
+          <p>Hook <code>city.cascade</code> into PagerDuty / Slack — the topic already carries the source + delta.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 11. Thanks -->
+    <section class="slide cover">
+      <div class="top">
+        <div class="deck-tag">Thanks</div>
+        <div class="rule"></div>
+        <h1>Questions?</h1>
+        <div class="subtitle">
+          Code · architecture · demo all live at <code>localhost:8000/ui/</code>.
+          The whole stack runs with <code>docker compose up</code>.
+        </div>
+      </div>
+      <div class="meta">
+        <div>Repo<strong>LuddyHackaton-case-2</strong></div>
+        <div>Entry<strong>/ui/ · /state · /performance</strong></div>
+        <div>API<strong>/openapi.yaml</strong></div>
+      </div>
+    </section>
+  </div>
+
+  <div class="nav">
+    <div class="hint">← →  or  Space to advance</div>
+    <div class="counter"><span id="cur">1</span> / <span id="total">1</span></div>
+  </div>
+
+  <script>
+    const slides = Array.from(document.querySelectorAll(".slide"));
+    const dotsEl = document.getElementById("dots");
+    const curEl = document.getElementById("cur");
+    const totEl = document.getElementById("total");
+    let idx = 0;
+
+    totEl.textContent = slides.length;
+    slides.forEach((_, i) => {
+      const d = document.createElement("div");
+      d.className = "dot" + (i === 0 ? " active" : "");
+      d.addEventListener("click", () => go(i));
+      dotsEl.appendChild(d);
+    });
+
+    function go(n) {
+      idx = Math.max(0, Math.min(slides.length - 1, n));
+      slides.forEach((s, i) => s.classList.toggle("active", i === idx));
+      dotsEl.querySelectorAll(".dot").forEach((d, i) => d.classList.toggle("active", i === idx));
+      curEl.textContent = idx + 1;
+      const url = new URL(location.href);
+      url.hash = String(idx + 1);
+      history.replaceState(null, "", url);
+    }
+
+    document.addEventListener("keydown", (e) => {
+      if (["ArrowRight", " ", "PageDown", "n"].includes(e.key)) { e.preventDefault(); go(idx + 1); }
+      else if (["ArrowLeft", "PageUp", "p"].includes(e.key)) { e.preventDefault(); go(idx - 1); }
+      else if (e.key === "Home") go(0);
+      else if (e.key === "End") go(slides.length - 1);
+    });
+
+    const hashIdx = parseInt(location.hash.replace("#", ""), 10);
+    if (Number.isFinite(hashIdx) && hashIdx > 0) go(hashIdx - 1);
+  </script>
+</body>
+</html>
